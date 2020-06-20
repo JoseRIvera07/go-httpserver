@@ -5,7 +5,9 @@ import (
 	"crypto/aes"
 	"crypto/rand"
 	"crypto/cipher"
+	"encoding/json"
 	"encoding/base64"
+	rq "app/structs"
 )
 // encrypt string to base64 crypto using AES
 func Encrypt(key []byte, text string) string {
@@ -21,5 +23,11 @@ func Encrypt(key []byte, text string) string {
 	}
 	stream := cipher.NewCFBEncrypter(block, iv)
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
-	return base64.URLEncoding.EncodeToString(ciphertext)
+	result := &rq.RequestBodyReturn{
+		Code: 200,
+		Message: "Success",
+		Data: base64.URLEncoding.EncodeToString(ciphertext)}
+	res, _ := json.Marshal(result)
+
+	return string(res)
 }

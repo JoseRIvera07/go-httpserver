@@ -1,0 +1,7 @@
+{
+    "Key": "123456789ABCDEFG",
+    "HttpMethod": "POST",
+    "MethodNotAllowedCode": 405,
+    "JSONDecoderCode": 400,
+    "SuccessCode": 200
+}
