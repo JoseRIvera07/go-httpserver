@@ -4,7 +4,7 @@ type Configuration struct {
 	Key string
 	HttpMethod string
 	MethodNotAllowedCode int
-	JSONDecoderCode int
+	InternalErrorCode int
 	SuccessCode int
 }
 

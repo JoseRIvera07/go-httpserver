@@ -29,7 +29,7 @@ func (e *MyError) WriteToResponse(w http.ResponseWriter) {
 func (e *MyError) ToJSON() string {
     j, err := json.Marshal(e)
     if err != nil {
-        return `{"code":500,"message":"ScrapError.JSONStr: json.Marshal() failed"}`
+        return `{"code":500,"message":json.Marshal() failed"}`
     }
     return string(j)
 }
@@ -42,10 +42,19 @@ func MethodNotAllowedErr(method string) *MyError {
     }
 }
 // JSONDecoderErr .
-func JSONDecoderErr(err error) *MyError {
+func InternalErrorCode(err error) *MyError {
     return &MyError{
         HTTPStatus: http.StatusInternalServerError,
-        Code:       st.Config.JSONDecoderCode,
+        Code:       st.Config.InternalErrorCode,
         Message:    err.Error(),
+    }
+}
+
+//DecryptErr
+func DecryptErr(text string) *MyError {
+    return &MyError{
+        HTTPStatus: http.StatusInternalServerError,
+        Code:       st.Config.InternalErrorCode,
+        Message:    fmt.Sprintf("text %q is not correctly encryted", text),
     }
 }

@@ -20,7 +20,7 @@ func EncryptHandler(w http.ResponseWriter, request *http.Request) {
 	decoder.DisallowUnknownFields()
 	err := decoder.Decode(&t)
 	if  err != nil {
-		JSONDecoderErr(err).WriteToResponse(w)
+		InternalErrorCode(err).WriteToResponse(w)
 		return
 	}
 	key := []byte(st.Config.Key)

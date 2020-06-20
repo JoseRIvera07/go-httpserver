@@ -20,10 +20,14 @@ func DecryptHandler(w http.ResponseWriter, request *http.Request) {
 	decoder.DisallowUnknownFields()
 	err := decoder.Decode(&t)
 	if  err != nil {
-		JSONDecoderErr(err).WriteToResponse(w)
+		InternalErrorCode(err).WriteToResponse(w)
 		return
 	}
 	key := []byte(st.Config.Key)
 	resultDecryptText := fn.Decrypt(key, t.Data)
+	if resultDecryptText == "-1"{
+		DecryptErr(t.Data).WriteToResponse(w)
+		return
+	}
 	fmt.Fprint(w, resultDecryptText)
 }

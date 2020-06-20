@@ -9,23 +9,23 @@ import (
 	rq "app/structs"
 )
 // decrypt from base64 to decrypted string
-func Decrypt(key []byte, cryptoText string) string {
-	ciphertext, _ := base64.URLEncoding.DecodeString(cryptoText)
+func Decrypt(key []byte, text string) string {
+	textEncode, _ := base64.URLEncoding.DecodeString(text)
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		panic(err)
 	}
-	if len(ciphertext) < aes.BlockSize {
-		panic("text too short")
+	if len(textEncode) < aes.BlockSize {
+		return "-1"
 	}
-	iv := ciphertext[:aes.BlockSize]
-	ciphertext = ciphertext[aes.BlockSize:]
+	iv := textEncode[:aes.BlockSize]
+	textEncode = textEncode[aes.BlockSize:]
 	stream := cipher.NewCFBDecrypter(block, iv)
-	stream.XORKeyStream(ciphertext, ciphertext)
+	stream.XORKeyStream(textEncode, textEncode)
 	result := &rq.RequestBodyReturn{
 		Code: 200,
 		Message: "Success",
-		Data: fmt.Sprintf("%s", ciphertext)}
+		Data: fmt.Sprintf("%s", textEncode)}
 	res, _ := json.Marshal(result)
 	return string(res)
 }
