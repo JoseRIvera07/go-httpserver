@@ -6,26 +6,27 @@ import (
 	"crypto/cipher"
 	"encoding/json"
 	"encoding/base64"
-	rq "app/structs"
+	st "app/structs"
 )
 // decrypt from base64 to decrypted string
 func Decrypt(key []byte, text string) string {
 	textEncode, _ := base64.URLEncoding.DecodeString(text)
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return "-1"
 	}
 	if len(textEncode) < aes.BlockSize {
 		return "-1"
-	}
+	} 
 	iv := textEncode[:aes.BlockSize]
 	textEncode = textEncode[aes.BlockSize:]
 	stream := cipher.NewCFBDecrypter(block, iv)
 	stream.XORKeyStream(textEncode, textEncode)
-	result := &rq.RequestBodyReturn{
+	result := &st.RequestBodyReturn{
 		Code: 200,
 		Message: "Success",
 		Data: fmt.Sprintf("%s", textEncode)}
 	res, _ := json.Marshal(result)
 	return string(res)
+	
 }

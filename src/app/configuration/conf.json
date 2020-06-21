@@ -1,5 +1,9 @@
 {
+    "Ip": "localhost",
+    "Port": ":8080",
     "Key": "123456789ABCDEFG",
+    "EncryptRoute": "/api/encrypt",
+	"DecryptRoute" : "/api/decrypt",
     "HttpMethod": "POST",
     "MethodNotAllowedCode": 405,
     "InternalErrorCode": 500,

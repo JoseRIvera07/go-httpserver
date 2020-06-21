@@ -14,7 +14,7 @@ func Encrypt(key []byte, text string) string {
 	plaintext := []byte(text)
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return "-1"
 	}
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]

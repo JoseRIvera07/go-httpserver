@@ -1,23 +1,45 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"io/ioutil"
+	"crypto/tls"
+	"crypto/x509"
+	st"app/structs"
+	rt "app/handlers"
 	"github.com/gorilla/mux"
 	"github.com/tkanos/gonfig"
-	rt "app/handlers"
-	st"app/structs"
 )
 
 func main() {
-	err := gonfig.GetConf("configuration/conf.json", &st.Config)
-	if err != nil {
-		fmt.Println("error:", err)
-		}
+	gonfig.GetConf("configuration/conf.json", &st.Config)
+
 	r := mux.NewRouter()
-	r.HandleFunc("/api/encrypt", rt.EncryptHandler)
-	r.HandleFunc("/api/decrypt", rt.DecryptHandler)
+	r.HandleFunc(st.Config.EncryptRoute, rt.EncryptHandler)
+	r.HandleFunc(st.Config.DecryptRoute, rt.DecryptHandler)
 	http.Handle("/", r)
-	r.Use(mux.CORSMethodMiddleware(r))
-	http.ListenAndServe(":8080", nil)
+	// Create a CA certificate pool and add cert.pem to it
+	caCert, err := ioutil.ReadFile("cert.pem")
+	if err != nil {
+		log.Fatal(err)
+	}
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(caCert)
+
+	// Create the TLS Config with the CA pool and enable Client certificate validation
+	tlsConfig := &tls.Config{
+		ClientCAs: caCertPool,
+		ClientAuth: tls.RequireAndVerifyClientCert,
+	}
+	tlsConfig.BuildNameToCertificate()
+
+	// Create a Server instance to listen on port 8443 with the TLS config
+	server := &http.Server{
+		Addr:      ":8443",
+		TLSConfig: tlsConfig,
+	}
+	
+	// Listen to HTTPS connections with the server certificate and wait
+	log.Fatal(server.ListenAndServeTLS("cert.pem", "key.pem"))
 }
