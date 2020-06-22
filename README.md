@@ -1,4 +1,4 @@
-# **Dependecies**
+# **Dependencies**
 Run:
 
 $go get github.com/gorilla/mux \ && go get github.com/tkanos/gonfig 
