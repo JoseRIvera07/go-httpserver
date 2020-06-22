@@ -48,9 +48,13 @@ The go-httpserver is going to response with a json like this:
 
 Inside $go-httpServer/src/app/functions: **go test -v --cover**
 
+![](./img/test_functions.png)
+
 ## **Execute handlers unit test**
 
 Inside $go-httpServer/src/app/handlers: **go test -v --cover**
+
+![](./img/test_handlers.png)
 
 # **DOCKER** 
 ## **On linux:**
