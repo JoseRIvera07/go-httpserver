@@ -1,8 +1,8 @@
 # **Dependecies**
 Run:
 
-**$go get github.com/gorilla/mux \
-    && go get github.com/tkanos/gonfig **
+**go get github.com/gorilla/mux \**
+**&& go get github.com/tkanos/gonfig **
     
 # **Build**
 Inside $go-httpServer/src/app: **go build -o main .**
