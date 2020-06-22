@@ -19,10 +19,13 @@ Take care of configurate your client with the certificate and key, because the s
 Inside $go-httpServer/src/app you're going to find cer.pem and key.pem, certificate and key correspondingly.
 To test this app, I used postman, here is a screen-shot of my certificate configuration.
 ![](./img/postman_ca.png)
+![](./img/postman_test_encrypt.png)
+![](./img/postman_test_decrypt.png)
+
 # **JSON**
 
 This is how the json must be to send de request to the server:
-**{"data": "test"}**
+**{"data": "here goes your string"}**
 
 # **Response**
 The go-httpserver is going to response with a json like this:
