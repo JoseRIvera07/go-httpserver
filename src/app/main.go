@@ -6,40 +6,41 @@ import (
 	"io/ioutil"
 	"crypto/tls"
 	"crypto/x509"
-	st"app/structs"
-	rt "app/handlers"
+	st"./structs"
+	rt"./handlers"
 	"github.com/gorilla/mux"
 	"github.com/tkanos/gonfig"
 )
 
 func main() {
-	gonfig.GetConf("configuration/conf.json", &st.Config)
-
+	//Load struct configuration
+	gonfig.GetConf("./configuration/conf.json", &st.Config)
+	//Use gorilla mux to route handlers
 	r := mux.NewRouter()
 	r.HandleFunc(st.Config.EncryptRoute, rt.EncryptHandler)
 	r.HandleFunc(st.Config.DecryptRoute, rt.DecryptHandler)
 	http.Handle("/", r)
-	// Create a CA certificate pool and add cert.pem to it
-	caCert, err := ioutil.ReadFile("cert.pem")
+	// Create CA certificate
+	caCert, err := ioutil.ReadFile("cert.pem") //add cert.pem to it
 	if err != nil {
 		log.Fatal(err)
 	}
 	caCertPool := x509.NewCertPool()
 	caCertPool.AppendCertsFromPEM(caCert)
 
-	// Create the TLS Config with the CA pool and enable Client certificate validation
+	// Enable Client certificate validation
 	tlsConfig := &tls.Config{
 		ClientCAs: caCertPool,
 		ClientAuth: tls.RequireAndVerifyClientCert,
 	}
 	tlsConfig.BuildNameToCertificate()
 
-	// Create a Server instance to listen on port 8443 with the TLS config
+	// Server instance 
 	server := &http.Server{
 		Addr:      ":8443",
 		TLSConfig: tlsConfig,
 	}
 	
-	// Listen to HTTPS connections with the server certificate and wait
+	// Set HTTPS connections with the server instance  with the certificate 
 	log.Fatal(server.ListenAndServeTLS("cert.pem", "key.pem"))
 }

@@ -1,10 +1,10 @@
-package handlers
+package Handlers
 
 import (
 	"fmt"
 	"net/http"
     "encoding/json"
-    st"app/structs"
+    st"../structs"
 )
 
 // MyError contains custom code, error message, and HTTP status code.

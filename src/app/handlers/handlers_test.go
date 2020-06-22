@@ -1,22 +1,23 @@
-package handlers
+package Handlers
 
 import (
 	"bytes"
 	"testing"
 	"net/http"
     "net/http/httptest"
-    st"app/structs"
+    st"../structs"
     "github.com/gorilla/mux"
     "github.com/tkanos/gonfig"
 )
 
-
+// func to check and compare expected response with given response
 func checkResponseCode(t *testing.T, expected, actual int) {
     if expected != actual {
         t.Errorf("Expected response code %d. Got %d\n", expected, actual)
     }
 }
 
+// test encrypt handler succes
 func TestEncryptHandlerSuccess(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
     var jsonStr = []byte(`{"data":"test function"}`)
@@ -26,14 +27,11 @@ func TestEncryptHandlerSuccess(t *testing.T) {
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", EncryptHandler).Methods("POST")
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 
 }
-
+// test encrypt handler fail because json format given.
 func TestEncryptHandlerFailJson(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
     var jsonStr = []byte(`{"something":"test product"}`)
@@ -43,14 +41,11 @@ func TestEncryptHandlerFailJson(t *testing.T) {
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", EncryptHandler).Methods("POST")
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 
 }
-
+// test encrypt handler fail because json wrong method given
 func TestEncryptHandlerFailMethod(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
     var jsonStr = []byte(`{"something":"test product"}`)
@@ -60,31 +55,25 @@ func TestEncryptHandlerFailMethod(t *testing.T) {
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", EncryptHandler).Methods("POST")
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 
 }
-
+// test decrypt handler succes
 func TestDecryptHandlerSuccess(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
-    var jsonStr = []byte(`{"data":"LiL_wkoqaHJVG8w3M6M8oZn0evtxXD0WpbpMgbQ="}`)
+    var jsonStr = []byte(`{"data":"eL8mP2if-kU-98RaW4qnLvGsN5U="}`)
     req, _ := http.NewRequest("POST", "/api/encrypt", bytes.NewBuffer(jsonStr))
     req.Header.Set("Content-Type", "application/json")
 
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", DecryptHandler)
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 
 }
-
+// test decrypt handler fail when text encrypted given does not show to be correct encrypted
 func TestDecryptHandlerFailText(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
     var jsonStr = []byte(`{"data":"wdhfsdhfiwf8347"}`)
@@ -94,29 +83,23 @@ func TestDecryptHandlerFailText(t *testing.T) {
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", DecryptHandler)
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 }
-
+// test decrypt handler fail because json format given.
 func TestDecryptHandlerFailJson(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
-    var jsonStr = []byte(`{"something":"LiL_wkoqaHJVG8w3M6M8oZn0evtxXD0WpbpMgbQ="}`)
+    var jsonStr = []byte(`{"something":"eL8mP2if-kU-98RaW4qnLvGsN5U="}`)
     req, _ := http.NewRequest("POST", "/api/encrypt", bytes.NewBuffer(jsonStr))
     req.Header.Set("Content-Type", "application/json")
 
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", DecryptHandler)
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 }
-
+// test decrypt handler fail because json wrong method given
 func TestDecryptHandlerFailMethod(t *testing.T) {
     gonfig.GetConf("../configuration/conf.json", &st.Config)
     var jsonStr = []byte(`{"something":"wdhfsdhfiwf8347"}`)
@@ -126,9 +109,6 @@ func TestDecryptHandlerFailMethod(t *testing.T) {
     rr := httptest.NewRecorder()
     r := mux.NewRouter()
 	r.HandleFunc("/api/encrypt", DecryptHandler)
-
-    // Our handlers satisfy http.Handler, so we can call their ServeHTTP method 
-    // directly and pass in our Request and ResponseRecorder.
     r.ServeHTTP(rr, req)
     checkResponseCode(t, http.StatusOK , rr.Code)
 }

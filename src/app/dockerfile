@@ -1,0 +1,37 @@
+# Start from the latest golang base image
+# We specify the base image we need for our
+# go application
+FROM golang:latest
+
+
+# Add Maintainer Info
+LABEL maintainer="Jose Rivera <ce.joserivera7@gmail.com>"
+# We create an /app directory within our
+# image that will hold our application source
+# files
+WORKDIR /src
+RUN mkdir /app
+
+ENV $GOPATH=$HOME/app
+
+RUN go get github.com/gorilla/mux \
+    && go get github.com/tkanos/gonfig 
+    
+# We copy everything in the root directory
+# into our /app directory
+COPY . /app
+# We specify that we now wish to execute 
+# any further commands inside our /app
+# directory
+WORKDIR /app
+
+RUN ls
+# we run go build to compile the binary
+# executable of our Go program
+
+RUN go build -o main .
+# Our start command which kicks off
+# our newly created binary executable
+
+EXPOSE 8443
+CMD ["./main"]
