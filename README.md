@@ -25,7 +25,7 @@ To test this app, I used postman, here is a screen-shot of my certificate config
 # **JSON**
 
 This is how the json must be to send de request to the server:
-**{"data": "test"}**
+**{"data": "here goes your string"}**
 
 # **Response**
 The go-httpserver is going to response with a json like this:
