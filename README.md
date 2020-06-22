@@ -7,7 +7,7 @@ Run
 ./main
 Take care of configurate your client with the certificate and key, because the server was configure to use https method. 
 Inside $go-httpServer/src/app you're going to find cer.pem and key.pem, certificate and key correspondingly.
-![](./src/img/postma_ca.png)
+![](./img/postman_ca.png)
 
 Unit Test
 
