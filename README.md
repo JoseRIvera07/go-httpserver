@@ -1,4 +1,10 @@
 # **Build**
+**I'm using relative paths, so take care of configure your GOPATH first.**
+
+My GOPATH, looks as follows:
+
+**export GOPATH=$HOME/go-httpserver/src/app**
+
 
 Inside $go-httpServer/src/app: **go build -o main .**
 
@@ -41,6 +47,6 @@ Inside $go-httpServer/src/app/handlers: **go test -v --cover**
 Inside $go-httpServer/src/app: **sudo docker build -t go-httpserver .**
 
 ### **To run the container:**
-sudo docker run -d -p 8443:8443 go-httpserver:latest
+**sudo docker run -d -p 8443:8443 go-httpserver:latest**
 
 
