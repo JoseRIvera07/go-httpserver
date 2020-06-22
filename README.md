@@ -35,3 +35,12 @@ Inside $go-httpServer/src/app/functions: **go test -v --cover**
 
 Inside $go-httpServer/src/app/handlers: **go test -v --cover**
 
+# **DOCKER** 
+## **On linux:**
+### **To create the container:**
+Inside $go-httpServer/src/app: **sudo docker build -t go-httpserver .**
+
+### **To run the container:**
+sudo docker run -d -p 8443:8443 go-httpserver:latest
+
+
