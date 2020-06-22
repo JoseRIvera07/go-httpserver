@@ -3,16 +3,14 @@
 # go application
 FROM golang:latest
 
-
 # Add Maintainer Info
 LABEL maintainer="Jose Rivera <ce.joserivera7@gmail.com>"
 # We create an /app directory within our
 # image that will hold our application source
 # files
 WORKDIR /src
-RUN mkdir /app
 
-ENV $GOPATH=$HOME/app
+RUN mkdir /app
 
 RUN go get github.com/gorilla/mux \
     && go get github.com/tkanos/gonfig 
@@ -25,7 +23,6 @@ COPY . /app
 # directory
 WORKDIR /app
 
-RUN ls
 # we run go build to compile the binary
 # executable of our Go program
 
