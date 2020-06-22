@@ -1,15 +1,18 @@
 # **Build**
+Inside $go-httpServer/src/app: **go build -o main .**
+
 **I'm using relative paths, so take care of configure your GOPATH first.**
 
 My GOPATH, looks as follows:
 
 **export GOPATH=$HOME/go-httpserver/src/app**
 
-
-Inside $go-httpServer/src/app: **go build -o main .**
-
 # **Run**
-
+## **IP & PORT**
+**IP:** localhost
+**PORT:** 8443
+**URL:** https://localhost:8443/
+## **Run app**
 Inside $go-httpServer/src/app: **./main**
 
 Take care of configurate your client with the certificate and key, because the server was configure to use https method. 
