@@ -37,7 +37,7 @@ func main() {
 
 	// Server instance 
 	server := &http.Server{
-		Addr:      ":8443",
+		Addr:      st.Config.Port,
 		TLSConfig: tlsConfig,
 	}
 	
